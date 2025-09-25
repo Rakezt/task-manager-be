@@ -114,5 +114,21 @@ router.get('/me', authenticate, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+router.put('/me', authenticate, upload.single('avatar'), async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const updates = { name, email };
+    if (req.file?.path) updates.avatar = req.file.path;
+
+    const user = await User.findByIdAndUpdate(req.user.id, updates, {
+      new: true,
+    }).select('name email avatar role');
+
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Update failed' });
+  }
+});
 
 module.exports = router;
