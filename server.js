@@ -13,7 +13,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/task', taskRoutes);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5090;
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
